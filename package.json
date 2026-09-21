@@ -1,0 +1,11 @@
+{
+  "name": "frontend-performance-attributor",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "python3 -m http.server 5173",
+    "test": "node --test tests/*.test.js",
+    "check": "node --check src/app.js && node --check src/collector.js && node --check src/worker.js && node --check src/attribution.js && node --check src/report.js && node --check src/utils.js && node --check src/stress-worker.js"
+  }
+}

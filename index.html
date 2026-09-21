@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>前端性能归因台</title>
+  <link rel="stylesheet" href="./src/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">PerformanceObserver · Canvas · Web Worker</p>
+        <h1>前端性能归因台</h1>
+        <p>监控 FPS、长任务、动画帧、Canvas/WebGL、布局变化，并给出可执行优化建议。</p>
+      </div>
+      <div class="actions">
+        <button id="start" class="primary">开始采集</button>
+        <button id="stop" disabled>停止并分析</button>
+      </div>
+    </header>
+
+    <section class="metrics">
+      <article><span>实时 FPS</span><strong id="fps">--</strong></article>
+      <article><span>当前状态</span><strong id="dropped">未开始</strong></article>
+      <article><span>已采集帧</span><strong id="longTasks">0</strong></article>
+    </section>
+
+    <section class="panel">
+      <div class="panel-title">
+        <div><h2>FPS 曲线</h2><p id="status">等待采集。</p></div>
+      </div>
+      <canvas id="chart"></canvas>
+    </section>
+
+    <section class="grid">
+      <article class="panel">
+        <h2>压测场景</h2>
+        <label>选择典型负载</label>
+        <select id="scenario">
+          <option value="longTask">主线程长任务</option>
+          <option value="layout">强制布局/布局抖动</option>
+          <option value="canvas">Canvas 过度绘制</option>
+          <option value="workerTask">Worker 计算负载（不阻塞主线程）</option>
+        </select>
+        <div class="scenario-actions">
+          <button id="applyScenario">启动场景</button>
+          <button id="clearScenario">停止场景</button>
+        </div>
+        <canvas id="demoCanvas" width="600" height="240"></canvas>
+        <div id="layoutBurst" class="layout-burst"></div>
+      </article>
+
+      <article class="panel">
+        <h2>掉帧归因与建议</h2>
+        <div id="attribution" class="causes"><p class="empty">报告生成后展示。</p></div>
+      </article>
+    </section>
+
+    <section class="grid wide-left">
+      <article class="panel">
+        <h2>脚本热点</h2>
+        <table>
+          <thead><tr><th>函数</th><th>来源</th><th>次数</th><th>耗时</th></tr></thead>
+          <tbody id="hotspots"><tr><td colspan="4">等待 Long Animation Frames 数据。</td></tr></tbody>
+        </table>
+      </article>
+      <article class="panel">
+        <h2>异常与降级</h2>
+        <ul id="warnings" class="warnings"></ul>
+        <h2>报告导出</h2>
+        <div class="export-actions">
+          <button id="exportJson" disabled>JSON</button>
+          <button id="exportCsv" disabled>帧 CSV</button>
+          <button id="exportHtml" disabled>HTML</button>
+        </div>
+      </article>
+    </section>
+  </main>
+  <script type="module" src="./src/app.js"></script>
+</body>
+</html>
