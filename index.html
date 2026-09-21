@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>前端性能监控台 — FPS / 长任务 / 掉帧归因</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>前端性能监控台</h1>
+    <p class="sub">PerformanceObserver + Canvas + Web Worker ｜ 采集 → 归因 → 建议 → 报告</p>
+  </header>
+
+  <div id="toast" role="alert"></div>
+
+  <section class="metrics">
+    <div class="metric"><span class="label">FPS</span><span id="m-fps" class="val">--</span></div>
+    <div class="metric"><span class="label">刷新率</span><span id="m-refresh" class="val">--</span></div>
+    <div class="metric"><span class="label">平均帧耗时</span><span id="m-frame" class="val">--</span></div>
+    <div class="metric"><span class="label">最差帧</span><span id="m-worst" class="val">--</span></div>
+    <div class="metric"><span class="label">掉帧(率)</span><span id="m-drops" class="val">--</span></div>
+  </section>
+
+  <section class="panel">
+    <h2>实时帧耗时（绿=正常 / 黄=超预算 / 红=掉帧）</h2>
+    <canvas id="chart"></canvas>
+  </section>
+
+  <section class="panel">
+    <h2>演示负载（验证归因准确性）</h2>
+    <div class="btns">
+      <button id="btn-longtask">注入 120ms 长任务</button>
+      <button id="btn-layout">注入布局抖动</button>
+      <button id="btn-gc">注入 GC 压力</button>
+      <button id="btn-resource">加载大图资源</button>
+      <button id="btn-error">触发运行时异常</button>
+      <button id="btn-report" class="primary">导出报告</button>
+      <button id="btn-reset">重置统计</button>
+    </div>
+    <div id="thrash-target" class="thrash"></div>
+  </section>
+
+  <div class="grid">
+    <section class="panel">
+      <h2>掉帧归因统计</h2>
+      <ul id="cause-list" class="list"></ul>
+    </section>
+    <section class="panel">
+      <h2>掉帧明细（最近 20 条）</h2>
+      <ul id="drop-list" class="list"></ul>
+    </section>
+    <section class="panel">
+      <h2>优化建议</h2>
+      <ul id="suggest-list" class="list"></ul>
+    </section>
+    <section class="panel">
+      <h2>运行时异常</h2>
+      <ul id="error-list" class="list"></ul>
+    </section>
+  </div>
+
+  <script src="js/monitor.js"></script>
+  <script src="js/report.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
